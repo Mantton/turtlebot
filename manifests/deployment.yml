@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: discord
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: turtlebot
+  namespace: discord
+
+  labels:
+    app: turtlebot
+spec:
+  selector:
+    matchLabels:
+      app: turtlebot
+  replicas: 1
+  template:
+    metadata: 
+      labels:
+        app: turtlebot
+    spec:
+      containers:
+        - name: turtlebot-deployment
+          image: gcr.io/mangasoup-4500a/turtlebot:latest
+          ports:
+            - containerPort: 6000
+          env:
+            - name: NODE_ENV
+              value: production
+            - name : TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: turtlebot-secrets
+                  key: api_token
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "250m"
