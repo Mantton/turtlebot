@@ -2,3 +2,4 @@
 node_modules
 manifests/secret.yml
 .vscode
+dist/
