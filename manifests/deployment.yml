@@ -24,8 +24,6 @@ spec:
       containers:
         - name: turtlebot-deployment
           image: gcr.io/mangasoup-4500a/turtlebot:latest
-          ports:
-            - containerPort: 6000
           env:
             - name: NODE_ENV
               value: production

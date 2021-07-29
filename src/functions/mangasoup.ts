@@ -102,6 +102,8 @@ function returnMangaSoupComic(message: Message, comic: any) {
     response.addFields({ name: "Credits", value: creators });
   }
 
+  response.addFields({ name: "MSID", value: comic.id });
+
   message.channel.send(response);
 }
 
