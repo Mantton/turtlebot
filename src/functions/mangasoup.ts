@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import { Message, MessageEmbed } from "discord.js";
 
 const MS_PARSER = "https://parser.mangasoup.net";
-const MS_STATS = "https://stats.mangasoup.net";
 
 export const openLink = async (message: Message): Promise<void> => {
   //^!open\s+<?(https?:\/\/.*|[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})>?
@@ -107,7 +107,11 @@ function returnMangaSoupComic(message: Message, comic: any) {
   message.channel.send(response);
 }
 
-function truncate(str: string, n: number, useWordBoundary: boolean) {
+export const truncate = (
+  str: string,
+  n: number,
+  useWordBoundary: boolean
+): string => {
   if (str.length <= n) {
     return str;
   }
@@ -117,4 +121,4 @@ function truncate(str: string, n: number, useWordBoundary: boolean) {
       ? subString.substr(0, subString.lastIndexOf(" "))
       : subString) + "..."
   );
-}
+};
