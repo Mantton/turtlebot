@@ -9,19 +9,28 @@ const API_URL = "https://graphql.anilist.co";
 const IMAGE_URL = "https://img.anili.st/media";
 
 export const getManga = async (message: Message): Promise<void> => {
-  const target = message.content.match(expressions[3])?.[1];
+  const target = message.content.match(expressions[3]);
+  const re = /<.*?https?:\/\/.*?>|<a?:.+?:\d*>|`[\s\S]*?`|<(.*?)>/;
   if (!target) {
     return;
   }
-  prepareResult(target, true, message);
+  for (const result of target) {
+    const title = result.match(re)?.[1];
+    if (title) prepareResult(title, true, message);
+  }
   return;
 };
 
 export const getAnime = async (message: Message): Promise<void> => {
-  const target = message.content.match(expressions[2])?.[1];
-  if (!target) return;
-  prepareResult(target, false, message);
-
+  const target = message.content.match(expressions[2]);
+  const re = /`[\s\S]*?`|{(.*?)}/;
+  if (!target) {
+    return;
+  }
+  for (const result of target) {
+    const title = result.match(re)?.[1];
+    if (title) prepareResult(title, false, message);
+  }
   return;
 };
 

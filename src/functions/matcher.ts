@@ -9,8 +9,8 @@ export enum Command {
 export const expressions = [
   /^!open\s+<?(https?:\/\/.*|[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})>?/, // MS ID or Direct Link
   /^!bookmark\s+<?(https?:\/\/.*|[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})>?/,
-  /`[\s\S]*?`|{(.*?)}/, // Anime
-  /<.*?https?:\/\/.*?>|<a?:.+?:\d*>|`[\s\S]*?`|<(.*?)>/, // Manga
+  /`[\s\S]*?`|{(.*?)}/g, // Anime
+  /<.*?https?:\/\/.*?>|<a?:.+?:\d*>|`[\s\S]*?`|<(.*?)>/g, // Manga
 ];
 
 export const matcher = (message: string): Command => {
