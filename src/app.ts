@@ -24,6 +24,10 @@ function main() {
       return;
     }
 
+    if (message.content == "!status") {
+      message.channel.send("Online!");
+      return;
+    }
     if (message.content.toLowerCase().includes("good bot")) {
       const positiveReactions = [
         "833208865923399691",
