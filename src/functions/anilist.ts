@@ -75,7 +75,7 @@ async function prepareResult(
   if (!result) {
     reactNotFound(message);
   }
-  const genres = result.genres.join(", ");
+  const genres = result.genres?.join(", ") ?? "";
 
   const description = `${truncate(result.description, 250, true)} [(more)](${
     result.siteUrl
@@ -97,7 +97,7 @@ async function prepareResult(
       "https://cdn.discordapp.com/emojis/833202441309650944.png?v=1", // MangaSoup Thumbnail
       `https://mangasoup.net/anilist/${result.id}`
     );
-    messageResponse.addFields({ name: "Genres", value: genres });
+    if (genres) messageResponse.addFields({ name: "Genres", value: genres });
     const chapters = result.chapters;
     let body = "";
     let status = "Status Unknown";
@@ -125,6 +125,7 @@ async function prepareResult(
       const titles = "Also called " + result.synonyms.join(", ") + "\n";
       body = body + titles;
     }
+    body = body + status;
     if (body.trim().length != 0)
       messageResponse.addFields({ name: "Additional Info", value: body });
   }
