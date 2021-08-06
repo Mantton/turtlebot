@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { getAnime, getManga } from "./anilist";
+import { getAnime, getManga, recommend } from "./anilist";
 import { openLink, reactNotFound } from "./mangasoup";
 import { Command, matcher } from "./matcher";
 
@@ -21,6 +21,9 @@ export const resolve = async (message: Message): Promise<void> => {
       break;
     case Command.readLater:
       reactNotFound(message);
+      break;
+    case Command.recommend:
+      await recommend(message);
       break;
 
     default:

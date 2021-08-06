@@ -3,6 +3,7 @@ export enum Command {
   mangaSearch,
   openInApp,
   readLater,
+  recommend,
   noMatch,
 }
 
@@ -11,6 +12,7 @@ export const expressions = [
   /^!bookmark\s+<?(https?:\/\/.*|[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})>?/,
   /`[\s\S]*?`|{(.*?)}/g, // Anime
   /<.*?https?:\/\/.*?>|<a?:.+?:\d*>|`[\s\S]*?`|<(.*?)>/g, // Manga
+  /^!rec (.*)/,
 ];
 
 export const matcher = (message: string): Command => {
@@ -25,6 +27,8 @@ export const matcher = (message: string): Command => {
           return Command.animeSearch;
         case 3:
           return Command.mangaSearch;
+        case 4:
+          return Command.recommend;
       }
     }
   }

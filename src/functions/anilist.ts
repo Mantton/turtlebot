@@ -1,6 +1,5 @@
 import axios from "axios";
 import { Message, MessageEmbed } from "discord.js";
-import { title } from "process";
 import { MEDIA_QUERY } from "../anilist/queries";
 import { reactNotFound, truncate } from "./mangasoup";
 import { expressions } from "./matcher";
@@ -8,6 +7,31 @@ import { expressions } from "./matcher";
 const API_URL = "https://graphql.anilist.co";
 const IMAGE_URL = "https://img.anili.st/media";
 
+export const recommend = async (message: Message) => {
+  const target = message.content.match(expressions[4])?.[1];
+
+  if (!target) {
+    reactNotFound(message);
+    return;
+  }
+  const data = await callApi(target, true);
+  const result = data.data.Page.media[0];
+  const recommendations: any[] = [];
+  result.recommendations.nodes.forEach((elem: any) => {
+    const title = `${elem.mediaRecommendation.title.userPreferred}`;
+    recommendations.push({
+      title,
+    });
+  });
+  if (recommendations.length == 0) {
+    reactNotFound(message);
+    return;
+  }
+
+  const selection =
+    recommendations[Math.floor(Math.random() * recommendations.length)];
+  await prepareResult(selection.title, true, message);
+};
 export const getManga = async (message: Message): Promise<void> => {
   const target = message.content.match(expressions[3]);
   const re = /<.*?https?:\/\/.*?>|<a?:.+?:\d*>|`[\s\S]*?`|<(.*?)>/;
@@ -38,18 +62,14 @@ function getTitle(data: any): string {
   return data.english || data.romaji || data.native;
 }
 
-async function prepareResult(
-  query: string,
-  isManga: boolean,
-  message: Message
-) {
+async function callApi(query: string, isManga: boolean) {
   const data = {
     query: MEDIA_QUERY,
     variables: {
       search: query.trim(),
       type: isManga ? "MANGA" : "ANIME",
       exclude: "NOVEL",
-      perPage: 50,
+      perPage: 5,
       page: 1,
     },
   };
@@ -64,13 +84,23 @@ async function prepareResult(
     headers,
     data: data,
     timeout: 10000,
-  }).catch((err) => {
-    message.channel.send("!");
+  });
+
+  return response.data;
+}
+
+async function prepareResult(
+  query: string,
+  isManga: boolean,
+  message: Message
+) {
+  const response = await callApi(query, isManga).catch((err) => {
+    reactNotFound(message);
   });
 
   if (!response) return;
 
-  const result = response.data.data.Page.media[0];
+  const result = response.data.Page.media[0];
 
   if (!result) {
     reactNotFound(message);

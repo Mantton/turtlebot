@@ -44,6 +44,24 @@ query (
         averageScore
         siteUrl
         popularity
+        recommendations(perPage: 50, sort: [RATING_DESC, ID]) {
+          pageInfo {
+            total
+          }
+          nodes {
+            id
+            mediaRecommendation {
+              id
+              siteUrl
+              title {
+                userPreferred
+              }
+              coverImage {
+                large
+              }
+            }
+          }
+        }
       }
     }
   }
