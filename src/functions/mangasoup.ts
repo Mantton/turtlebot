@@ -17,7 +17,6 @@ export const openLink = async (message: Message): Promise<void> => {
   const target = message.content.match(regex.initial)?.[1];
 
   if (!target) {
-    reactNotFound(message);
     return;
   }
   if (target.match(regex.url)) {
