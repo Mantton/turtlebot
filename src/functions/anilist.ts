@@ -102,9 +102,7 @@ async function prepareResult(
 
   const result = response.data.Page.media[0];
 
-  if (!result) {
-    reactNotFound(message);
-  }
+  if (!result) return;
   const genres = result.genres?.join(", ") ?? "";
 
   const description = `${truncate(result.description, 250, true)} [(more)](${
