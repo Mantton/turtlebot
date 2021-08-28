@@ -95,7 +95,7 @@ async function prepareResult(
   message: Message
 ) {
   const response = await callApi(query, isManga).catch((err) => {
-    reactNotFound(message);
+    // reactNotFound(message);
   });
 
   if (!response) return;

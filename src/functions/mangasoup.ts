@@ -68,13 +68,9 @@ function returnMangaSoupComic(message: Message, comic: any) {
     "https://cdn.discordapp.com/emojis/833202441309650944.png?v=1";
   const response = new MessageEmbed()
     .setColor("#6A5ACD")
-    .setTitle(comic.title)
-    .setURL(comic.webUrl)
-    .setAuthor(
-      "Open In App",
-      MS_THUMBNAIL,
-      `${UNI_BASE}/${comic.sourceId}/${comic.comicId}`
-    )
+    .setTitle("Open in App")
+    .setURL(`${UNI_BASE}/${comic.sourceId}/${comic.comicId}`)
+    .setAuthor(comic.title, MS_THUMBNAIL, comic.webUrl)
     .setDescription(truncate(comic.summary, 256, true))
     .setThumbnail(comic.image.link)
     .setTimestamp()
